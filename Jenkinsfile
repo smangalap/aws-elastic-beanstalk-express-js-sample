@@ -54,6 +54,7 @@ pipeline {
 
             steps {
                 echo 'Scanning dependencies for High and Critical vulnerabilities...'
+                sh 'npm audit --json > audit-report.json || true'
                 sh 'npm audit --audit-level=high'
             }
         }
@@ -86,6 +87,9 @@ pipeline {
 
         always {
             echo "Pipeline finished with result: ${currentBuild.currentResult}"
+            archiveArtifacts artifacts: 'audit-report.json',
+			    allowEmptyArchive: true,
+			    fingerprint: true	 	
         }
 
         success {
