@@ -5,7 +5,7 @@ pipeline {
     environment {
        
         CI = 'true'
-        IMAGE_NAME = 'smangalap/isec6000-assessment2'
+        IMAGE_NAME = 'smangalap/isec6000-assessment-2'
     }
 
     stages {
