@@ -27,6 +27,14 @@ pipeline {
                 sh 'npm test'
             }
         }
+
+	stage('Security Scan') {
+    	    steps {
+                echo 'Scanning dependencies for High and Critical vulnerabilities...'
+                sh 'npm audit --audit-level=high'
+            }
+        }
+
     }
 
     post {
@@ -35,7 +43,7 @@ pipeline {
         }
 
         success {
-            echo 'Install and test stages passed.'
+            echo 'Install, test and security scan stages passed.'
         }
 
         failure {
