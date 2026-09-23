@@ -78,7 +78,9 @@ pipeline {
                    sh 'docker push ${IMAGE_NAME}:${BUILD_NUMBER}'
                }
           }
-       }
+ 
+      }
+    }
     
     post {
 
