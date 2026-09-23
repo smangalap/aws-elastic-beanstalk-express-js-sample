@@ -66,8 +66,20 @@ pipeline {
                 sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
             }
         }
-    }
 
+       stage('Push Docker Image') {
+           steps {
+               withCredentials([usernamePassword(
+                   credentialsId: 'dockerhub-credentials',
+                   usernameVariable: 'DOCKER_USER',
+                   passwordVariable: 'DOCKER_TOKEN'
+               )]) {
+                   sh 'echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin'
+                   sh 'docker push ${IMAGE_NAME}:${BUILD_NUMBER}'
+               }
+          }
+       }
+    
     post {
 
         always {
@@ -75,7 +87,7 @@ pipeline {
         }
 
         success {
-            echo 'Install, test, security scan, and Docker build stages passed.'
+            echo 'Install, test, security scan, Docker build, and Docker push stages passed.'
         }
 
         failure {
